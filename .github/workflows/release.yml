@@ -10,14 +10,12 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: macos-latest
-            rid: osx-arm64
+          - rid: osx-arm64
             artifact: PostgresMcpServer-osx-arm64
-          - os: macos-13
-            rid: osx-x64
+          - rid: osx-x64
             artifact: PostgresMcpServer-osx-x64
 
-    runs-on: ${{ matrix.os }}
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -29,7 +27,7 @@ jobs:
 
       - name: Publish self-contained binary
         run: |
-          dotnet publish -c Release -r ${{ matrix.rid }} --self-contained \
+          dotnet publish PostgresMcpServer.csproj -c Release -r ${{ matrix.rid }} --self-contained \
             -p:PublishSingleFile=true \
             -p:IncludeNativeLibrariesForSelfExtract=true \
             -o ./publish
